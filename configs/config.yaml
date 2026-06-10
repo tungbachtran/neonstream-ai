@@ -1,0 +1,120 @@
+# ===== MODEL CONFIG =====
+model:
+  name: "vinai/phobert-base"
+  num_labels: 4                      # ← ĐỔI: thêm adult
+  dropout_rate: 0.3
+  use_attention_pooling: true
+  num_dropout_samples: 5
+  freeze_layers: 0
+  max_length: 256
+
+# ===== TRAINING CONFIG =====
+training:
+  num_epochs: 20
+  batch_size: 16
+  gradient_accumulation_steps: 2
+  phobert_lr: 2.0e-5
+  classifier_lr: 1.0e-4
+  weight_decay: 0.01
+  adam_epsilon: 1.0e-8
+  max_grad_norm: 1.0
+  warmup_ratio: 0.1
+  label_smoothing: 0.1
+  use_amp: true
+  early_stopping_patience: 5
+  num_workers: 2
+
+# ===== DATA CONFIG =====
+data:
+  train_ratio: 0.7
+  val_ratio: 0.15
+  test_ratio: 0.15
+  target_per_class: 1000
+  use_augmentation: true
+  use_word_segment: true
+
+# ===== COLLECTION CONFIG =====  ← HOÀN TOÀN MỚI
+collection:
+  enabled_sources:
+    - huggingface
+    - vnexpress
+    - youtube
+    - telegram
+    - synthetic
+    # - facebook          # Bật khi có Selenium setup
+    # - manual            # Bật khi có file annotation
+
+  huggingface:
+    datasets:
+
+      - name: "tarudesu/VOZ-HSD"
+        text_col: "texts"
+        label_col: "labels"
+        label_remap: {0: 0, 1: 1}
+        split: "train"
+        max_samples: 10000
+
+  youtube:
+    api_key: ""                       # Điền Google API key
+    max_comments_per_video: 300
+    video_targets:
+      clean:
+        - "dQw4w9WgXcQ"              # Thay bằng video ID thực
+      toxic:
+        - "TOXIC_VIDEO_ID_1"
+      spam:
+        - "SPAM_VIDEO_ID_1"
+      adult:
+        - "ADULT_DISCUSSION_ID_1"    # Video thảo luận về chủ đề nhạy cảm
+
+  vnexpress:
+    max_articles: 200
+    max_comments_per_article: 100
+    categories:
+      - "https://vnexpress.net/thoi-su"
+      - "https://vnexpress.net/giao-duc"
+      - "https://vnexpress.net/kinh-doanh"
+      - "https://vnexpress.net/giai-tri"
+
+  telegram:
+    # Dùng Telethon - cần API ID + Hash từ my.telegram.org
+    api_id: ""
+    api_hash: ""
+    phone: ""
+    channels:
+      spam:
+        - "muabanraovat"
+        - "quangcaoviet"
+      clean:
+        - "tintucvietnam"
+        - "hoctiengviet"
+      adult:
+        - "channel_name_18plus"      # Public channels
+
+  synthetic:
+    target_per_class: 500            # Sinh thêm nếu thiếu
+    enable_adult: true
+
+  manual:
+    # Đặt file annotation vào đây
+    files:
+      - "data/raw/manual/annotated_batch1.xlsx"
+      - "data/raw/manual/annotated_batch2.xlsx"
+
+# ===== INFERENCE CONFIG =====
+inference:
+  confidence_threshold: 0.5
+  toxic_threshold: 0.4
+  spam_threshold: 0.4
+  adult_threshold: 0.4               # ← THÊM MỚI
+  batch_size: 32
+
+# ===== PATHS =====
+paths:
+  data_dir: "data"
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  augmented_dir: "data/augmented"
+  checkpoint_dir: "models/checkpoints"
+  log_dir: "logs"
+  collection_log_dir: "data/collection_logs"

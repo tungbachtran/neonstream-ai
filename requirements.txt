@@ -1,0 +1,36 @@
+# ===== Core ML (tương thích Python 3.12 + Windows) =====
+torch==2.2.2
+torchvision==0.17.2
+transformers==4.40.2
+datasets==2.19.1
+tokenizers==0.19.1
+accelerate==0.30.1
+evaluate==0.4.2
+scikit-learn==1.4.2
+numpy==1.26.4
+pandas==2.2.2
+
+# ===== Vietnamese NLP =====
+pyvi==0.1.1
+underthesea==6.8.4
+
+# ===== Training utilities =====
+tensorboard==2.16.2
+tqdm==4.66.4
+pyyaml==6.0.1
+python-dotenv==1.0.1
+
+# ===== API Server =====
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+pydantic==2.7.1
+redis==5.0.4
+httpx==0.27.0
+python-multipart==0.0.9
+
+# ===== Monitoring =====
+loguru==0.7.2
+
+# ===== Utilities =====
+sentencepiece==0.2.0
+protobuf==4.25.3

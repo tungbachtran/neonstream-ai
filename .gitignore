@@ -1,0 +1,25 @@
+# Bỏ qua models (đã scp riêng rồi)
+/models/
+
+# Bỏ qua data thô (nặng, không cần thiết)
+data/raw/
+data/processed/
+data/augmented/
+
+# Bỏ qua logs
+logs/
+
+# Bỏ qua venv
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Bỏ qua env secrets
+.env
+*.env
+
+# Bỏ qua DS_Store (Mac)
+.DS_Store
