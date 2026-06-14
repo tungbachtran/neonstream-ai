@@ -145,12 +145,12 @@ def _determine_action(result: dict) -> tuple:
             return "warn",  "Nội dung có thể là spam"
         return "allow", None
 
-    #if prediction == 'adult':                              # ← THÊM BLOCK MỚI
-        #if scores['adult'] >= 0.6:
-            #return "block", "Nội dung khiêu dâm - vi phạm nghiêm trọng"
-        #elif scores['adult'] >= 0.4:
-            #return "warn",  "Nội dung có thể không phù hợp với trẻ em"
-        #return "allow", None
+    if prediction == 'adult':                              # ← THÊM BLOCK MỚI
+        if scores['adult'] >= 0.6:
+            return "block", "Nội dung khiêu dâm - vi phạm nghiêm trọng"
+        elif scores['adult'] >= 0.4:
+            return "warn",  "Nội dung có thể không phù hợp với trẻ em"
+        return "allow", None
 
     return "allow", None
 

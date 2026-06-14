@@ -23,3 +23,5 @@ __pycache__/
 
 # Bỏ qua DS_Store (Mac)
 .DS_Store
+
+/deploy.sh

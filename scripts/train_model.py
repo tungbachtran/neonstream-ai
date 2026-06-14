@@ -18,7 +18,7 @@ from src.training.trainer import PhoBERTTrainer
 
 def main():
     # ── Config ───────────────────────────────────────────
-    with open("configs/config.yaml") as f:
+    with open("configs/config.yaml", encoding="utf-8") as f:
         config = yaml.safe_load(f)
 
     logger.add("logs/training.log", rotation="50 MB")

@@ -10,7 +10,7 @@ class PredictionLabel(str, Enum):
     CLEAN = "clean"
     TOXIC = "toxic"
     SPAM  = "spam"
-    #ADULT = "adult"
+    ADULT = "adult"
 
 
 class SinglePredictRequest(BaseModel):
@@ -37,7 +37,7 @@ class ScoreDetail(BaseModel):
     clean: float
     toxic: float
     spam:  float
-    #adult: float
+    adult: float
 
 
 class PredictionResult(BaseModel):

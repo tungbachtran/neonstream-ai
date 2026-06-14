@@ -24,10 +24,9 @@ class ToxicSpamPredictor:
     - Detailed result output
     """
 
-    # LABEL_MAP  = {0: "clean", 1: "toxic", 2: "spam", 3: "adult"}
-    # LABEL_EMOJI = {0: "✅", 1: "🚫", 2: "📢", 3: "🔞"} 
-    LABEL_MAP  = {0: "clean", 1: "toxic", 2: "spam", }
-    LABEL_EMOJI = {0: "✅", 1: "🚫", 2: "📢",} 
+    LABEL_MAP  = {0: "clean", 1: "toxic", 2: "spam", 3: "adult"}
+    LABEL_EMOJI = {0: "✅", 1: "🚫", 2: "📢", 3: "🔞"} 
+
 
     def __init__(
         self,
@@ -46,7 +45,7 @@ class ToxicSpamPredictor:
             0: 1.0 - toxic_threshold - spam_threshold,  # clean
             1: toxic_threshold,
             2: spam_threshold,
-            #3: adult_threshold
+            3: adult_threshold
         }
 
         # Device
@@ -79,7 +78,7 @@ class ToxicSpamPredictor:
         # Khởi tạo model architecture
         model = PhoBERTClassifier(
             model_name=self.model_name,
-            num_labels=3,
+            num_labels=4,
             dropout_rate=0.1,  # Thấp hơn khi inference
             use_attention_pooling=True
         )
@@ -151,8 +150,8 @@ class ToxicSpamPredictor:
         # Nếu toxic/spam score vượt threshold thì flag
         is_flagged = (
             probs[1] >= self.thresholds[1] or   # toxic
-            probs[2] >= self.thresholds[2] #or   # spam
-           # probs[3] >= self.thresholds[3]       # ← THÊM adult
+            probs[2] >= self.thresholds[2] or   # spam
+            probs[3] >= self.thresholds[3]       # ← THÊM adult
         )
 
         inference_time = (time.time() - start_time) * 1000  # ms
@@ -168,7 +167,7 @@ class ToxicSpamPredictor:
                 "clean": round(float(probs[0]), 4),
                 "toxic": round(float(probs[1]), 4),
                 "spam":  round(float(probs[2]), 4),
-                #"adult": round(float(probs[3]), 4),  # ← THÊM
+                "adult": round(float(probs[3]), 4), 
             },
             "emoji": self.LABEL_EMOJI[pred_label],
             "inference_time_ms": round(inference_time, 2)
@@ -230,7 +229,8 @@ class ToxicSpamPredictor:
                     "scores": {
                         "clean": round(float(p[0]), 4),
                         "toxic": round(float(p[1]), 4),
-                        "spam": round(float(p[2]), 4)
+                        "spam": round(float(p[2]), 4),
+                        "adult": round(float(p[3]), 4)
                     }
                 }
 
@@ -250,6 +250,6 @@ class ToxicSpamPredictor:
             "label": 0,
             "confidence": 0.0,
             "is_flagged": False,
-            "scores": {"clean": 1.0, "toxic": 0.0, "spam": 0.0},
+            "scores": {"clean": 1.0, "toxic": 0.0, "spam": 0.0, "adult": 0.0},
             "error": reason
         }
